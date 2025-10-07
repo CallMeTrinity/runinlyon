@@ -67,10 +67,30 @@ function setUrlParameter(name, value) {
     window.history.pushState({}, '', url);
 }
 
+function setMultipleUrlParameters(params) {
+    const url = new URL(window.location);
+    Object.keys(params).forEach(key => {
+        if (params[key] !== null && params[key] !== undefined) {
+            url.searchParams.set(key, params[key]);
+        }
+    });
+    window.history.pushState({}, '', url);
+}
+
 function clearUrlParameters() {
     const url = new URL(window.location);
     url.search = '';
     window.history.pushState({}, '', url);
+}
+
+// Get race file from race name
+function getRaceFile(raceName) {
+    const raceFiles = {
+        '10k': '../data/639.json',
+        '21k': '../data/635.json',
+        '42k': '../data/636.json'
+    };
+    return raceFiles[raceName.toLowerCase()] || '../data/639.json';
 }
 
 // Load and parse race data
@@ -113,18 +133,23 @@ async function loadRaceData(raceFile = currentRaceFile) {
         currentRaceFile = raceFile;
         initializeApp();
 
-        // Check for URL parameters
+        hideLoading();
+
+        // Check for URL parameters after data is loaded
         const bibParam = getUrlParameter('bib');
         if (bibParam) {
             const bib = parseInt(bibParam);
             const participant = raceData.find(p => p.bib === bib);
             if (participant) {
                 displayParticipantResults(participant);
+                // Don't show toast if we're loading from URL param
+            } else {
+                showToast(`Participant with bib ${bib} not found`, 'error');
             }
+        } else {
+            // Only show success toast if not loading from URL param
+            showToast(`${currentRaceName} race data loaded successfully!`, 'success');
         }
-
-        hideLoading();
-        showToast(`${currentRaceName} race data loaded successfully!`, 'success');
     } catch (error) {
         hideLoading();
         showToast(`Error loading race data: ${error.message}`, 'error');
@@ -204,10 +229,32 @@ function searchByBib() {
     const participant = raceData.find(p => p.bib === bibNumber);
     if (participant) {
         displayParticipantResults(participant);
-        setUrlParameter('bib', bibNumber);
+        updateUrlWithCurrentState(bibNumber);
     } else {
         showToast(`No participant found with bib number ${bibNumber}`, 'error');
     }
+}
+
+// Update URL with all current state
+function updateUrlWithCurrentState(bib = null) {
+    const params = {
+        race: currentRaceName
+    };
+
+    if (bib) {
+        params.bib = bib;
+    }
+
+    // Add filters if not "all"
+    const genderFilter = document.getElementById('genderFilter').value;
+    const categoryFilter = document.getElementById('categoryFilter').value;
+    const nationalityFilter = document.getElementById('nationalityFilter').value;
+
+    if (genderFilter !== 'all') params.gender = genderFilter;
+    if (categoryFilter !== 'all') params.category = categoryFilter;
+    if (nationalityFilter !== 'all') params.nationality = nationalityFilter;
+
+    setMultipleUrlParameters(params);
 }
 
 // Search by name
@@ -225,7 +272,7 @@ function searchByName() {
 
     if (matches.length === 1) {
         displayParticipantResults(matches[0]);
-        setUrlParameter('bib', matches[0].bib);
+        updateUrlWithCurrentState(matches[0].bib);
     } else if (matches.length > 1) {
         displayMultipleMatches(matches);
         showToast(`Found ${matches.length} participants matching "${searchName}"`, 'info');
@@ -251,7 +298,7 @@ function displayMultipleMatches(matches) {
     let html = `<h3>Multiple matches found (${matches.length}):</h3><div class="matches-list">`;
     matches.forEach(p => {
         html += `
-            <div class="match-item" onclick="displayParticipantResults(raceData.find(x => x.bib === ${p.bib}))">
+            <div class="match-item" onclick="selectParticipant(${p.bib})">
                 <strong>${p.firstname} ${p.lastname}</strong> - Bib: ${p.bib} - ${p.chipResult}
             </div>
         `;
@@ -263,6 +310,15 @@ function displayMultipleMatches(matches) {
     resultsSection.scrollIntoView({ behavior: 'smooth' });
 }
 
+// Select participant from multiple matches
+function selectParticipant(bib) {
+    const participant = raceData.find(x => x.bib === bib);
+    if (participant) {
+        displayParticipantResults(participant);
+        updateUrlWithCurrentState(bib);
+    }
+}
+
 // Print participant results
 function printResults() {
     window.print();
@@ -270,8 +326,9 @@ function printResults() {
 
 // Share participant results
 function shareResults(bib) {
-    const url = `${window.location.origin}${window.location.pathname}?bib=${bib}`;
-    navigator.clipboard.writeText(url).then(() => {
+    // Use current URL which already has all parameters
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl).then(() => {
         showToast('Link copied to clipboard!', 'success');
     }).catch(() => {
         showToast('Failed to copy link', 'error');
@@ -732,6 +789,9 @@ function applyFilters() {
     // Update leaderboard
     const activeTab = document.querySelector('.tab-btn.active').dataset.tab;
     renderLeaderboard(activeTab, filteredData);
+
+    // Update URL with filters
+    updateUrlWithCurrentState();
 }
 
 // Setup event listeners
@@ -786,9 +846,11 @@ function setupRaceSelector() {
             const raceFile = btn.dataset.file;
             currentRaceName = btn.dataset.race;
 
-            // Hide participant results and clear URL
+            // Hide participant results
             document.getElementById('participantResults').classList.add('hidden');
-            clearUrlParameters();
+
+            // Update URL with just race parameter (clear bib)
+            setMultipleUrlParameters({ race: currentRaceName });
 
             // Load new race data
             await loadRaceData(raceFile);
@@ -800,5 +862,35 @@ function setupRaceSelector() {
 document.addEventListener('DOMContentLoaded', () => {
     setupRaceSelector();
     setupEventListeners();
-    loadRaceData();
+
+    // Check for URL parameters to determine initial state
+    const urlRace = getUrlParameter('race');
+    const urlGender = getUrlParameter('gender');
+    const urlCategory = getUrlParameter('category');
+    const urlNationality = getUrlParameter('nationality');
+
+    // Set race from URL if provided
+    if (urlRace) {
+        currentRaceName = urlRace;
+        currentRaceFile = getRaceFile(urlRace);
+
+        // Update active race button
+        document.querySelectorAll('.race-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.race === urlRace) {
+                btn.classList.add('active');
+            }
+        });
+    }
+
+    // Load the race data (will handle bib parameter after loading)
+    loadRaceData(currentRaceFile).then(() => {
+        // Apply filters from URL if provided
+        if (urlGender || urlCategory || urlNationality) {
+            if (urlGender) document.getElementById('genderFilter').value = urlGender;
+            if (urlCategory) document.getElementById('categoryFilter').value = urlCategory;
+            if (urlNationality) document.getElementById('nationalityFilter').value = urlNationality;
+            applyFilters();
+        }
+    });
 });

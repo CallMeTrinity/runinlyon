@@ -4,12 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Python project for comprehensive "Run in Lyon" race data analysis and visualization. The project contains:
-- `main.py`: Simple starter script
-- `race_analysis.py`: Comprehensive race data analysis and visualization script
-- `summary_example.py`: Example script showing how to use the summary features
-- `635.json`: Large race results dataset (1.8MB) containing participant information including names, times, rankings, categories, and nationalities
-- `requirements.txt`: Python dependencies
+This is a comprehensive "Run in Lyon" race data analysis and visualization project with both web application and Python analysis tools. The project contains:
+- **Web Application**: Interactive race results explorer (in `web/` directory)
+- **Python Analysis**: Comprehensive data analysis and visualization scripts (in `analysis/` directory)
+- **Race Data**: Multiple race datasets in JSON format (in `data/` directory)
+- **Documentation**: Setup and usage instructions
 
 ## Development Environment
 
@@ -25,14 +24,21 @@ pip install -r requirements.txt
 
 ## Common Commands
 
+### Run the web application
+```bash
+# Start a local server from the project root
+python -m http.server 8000
+# Then open http://localhost:8000/web/
+```
+
 ### Run comprehensive race analysis
 ```bash
-python race_analysis.py
+python analysis/race_analysis.py
 ```
 
 ### Run summary example only
 ```bash
-python summary_example.py
+python analysis/summary_example.py
 ```
 
 ### Install packages individually
@@ -49,21 +55,51 @@ The JSON file contains race results with the following structure:
 
 ```
 runinlyon/
-├── main.py                    # Simple starter script
-├── race_analysis.py           # Comprehensive race data analysis script  
-├── summary_example.py         # Example usage of summary features
-├── requirements.txt           # Python dependencies
-├── 635.json                  # Race results data (1.8MB)
-├── CLAUDE.md                 # This documentation file
+├── web/                          # Web application
+│   ├── index.html               # Main HTML file with accessibility features
+│   ├── app.js                   # JavaScript with toast notifications, URL params, etc.
+│   └── styles.css               # Responsive styling with loading states
+├── data/                        # Race data files
+│   ├── 635.json                # Half Marathon (21K) results
+│   ├── 636.json                # Marathon (42K) results
+│   └── 639.json                # 10K results
+├── analysis/                    # Python analysis scripts
+│   ├── race_analysis.py        # Main analysis script
+│   └── summary_example.py      # Example usage
+├── requirements.txt            # Python dependencies
+├── CLAUDE.md                   # This documentation file
+├── README.md                   # Comprehensive project documentation
+├── .gitignore                  # Git ignore rules
 └── Generated files:
-    ├── *.png                 # Visualization charts
-    ├── run_in_lyon_summary.csv    # Complete summary (CSV format)
-    └── *.xlsx                # Excel summaries (if openpyxl installed)
+    ├── *.png                   # Visualization charts
+    ├── run_in_lyon_summary.csv # Complete summary (CSV format)
+    └── *.xlsx                  # Excel summaries (if openpyxl installed)
 ```
 
-## Race Analysis Features
+## Web Application Features
 
-The `race_analysis.py` script provides:
+The web application (`web/index.html`) provides:
+
+### Interactive Features
+- **Search**: Search by bib number or participant name
+- **Race Selection**: Switch between 10K, Half Marathon (21K), and Marathon (42K)
+- **Detailed Results**: View comprehensive participant statistics with pace calculation
+- **Share & Export**: Copy shareable URLs, print results
+- **Toast Notifications**: User-friendly notifications instead of alerts
+- **Loading States**: Spinner overlays during data loading
+- **Keyboard Navigation**: ESC to clear, Enter to search
+- **Accessibility**: ARIA labels and screen reader support
+
+### Data Visualization
+- Time distribution charts
+- Performance by age category
+- Gender distribution
+- Top nationalities
+- Filter by gender, category, and nationality
+
+## Python Analysis Features
+
+The `analysis/race_analysis.py` script provides:
 
 ### General Statistics
 - Total participants and finishers
@@ -97,10 +133,10 @@ The `race_analysis.py` script provides:
 
 ### Usage Examples
 ```python
-from race_analysis import RaceAnalyzer
+from analysis.race_analysis import RaceAnalyzer
 
 # Initialize analyzer
-analyzer = RaceAnalyzer()
+analyzer = RaceAnalyzer('data/639.json')
 
 # Get general statistics
 stats = analyzer.general_statistics()

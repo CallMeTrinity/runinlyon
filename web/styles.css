@@ -676,22 +676,222 @@ tbody tr:hover {
 
 /* Print Styles */
 @media print {
-    body {
-        background: white;
+    @page {
+        size: A4;
+        margin: 1cm;
     }
 
+    body {
+        background: white !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Hide everything except results */
     header, .search-section, .filters-section, .charts-section,
-    .leaderboard-section, footer, .action-buttons, .stats-section {
+    .leaderboard-section, footer, .stats-section,
+    .loading-overlay, .toast-container {
         display: none !important;
     }
 
-    .results-section {
-        background: white !important;
-        box-shadow: none !important;
+    /* Hide action buttons in print */
+    .action-buttons {
+        display: none !important;
     }
 
-    .participant-card {
+    /* Container adjustments */
+    .container {
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Results section - keep gradient background */
+    .results-section {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        border-radius: 0 !important;
         page-break-inside: avoid;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .results-section h2 {
+        color: white !important;
+        border-color: white !important;
+        font-size: 1.8rem !important;
+        margin-bottom: 20px !important;
+        text-align: center;
+    }
+
+    /* Participant card - white background with colors preserved */
+    .participant-card {
+        background: white !important;
+        border-radius: 12px !important;
+        padding: 25px !important;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+        page-break-inside: avoid;
+    }
+
+    /* Keep header styling */
+    .participant-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    .participant-header h3 {
+        color: #111827 !important;
+        font-size: 1.8rem !important;
+    }
+
+    .bib-badge {
+        background: #2563eb !important;
+        color: white !important;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Detail rows with background */
+    .participant-details {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .detail-row {
+        padding: 10px;
+        background: #f9fafb !important;
+        border-radius: 6px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .detail-row .label {
+        font-weight: 600;
+        color: #6b7280 !important;
+    }
+
+    .detail-row .value {
+        font-weight: 700;
+        color: #111827 !important;
+    }
+
+    /* Time cards with gradient backgrounds */
+    .time-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .time-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .time-label {
+        font-size: 0.9rem;
+        opacity: 0.95;
+        margin-bottom: 10px;
+    }
+
+    .time-value {
+        font-size: 2rem !important;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .time-note {
+        font-size: 0.85rem;
+        opacity: 0.9;
+    }
+
+    /* Ranking cards */
+    .rankings-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .ranking-card {
+        background: #f9fafb !important;
+        padding: 15px;
+        border-radius: 12px;
+        border: 2px solid #e5e7eb;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .ranking-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #6b7280 !important;
+        margin-bottom: 8px;
+    }
+
+    .ranking-value {
+        font-size: 1.4rem !important;
+        font-weight: 700;
+        color: #111827 !important;
+        margin-bottom: 5px;
+    }
+
+    .percentile {
+        font-size: 1rem !important;
+        font-weight: 600;
+        color: #10b981 !important;
+        margin-bottom: 8px;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: #e5e7eb !important;
+        border-radius: 5px;
+        overflow: hidden;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #10b981, #2563eb) !important;
+        border-radius: 5px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Add print-specific logo/header */
+    .results-section::before {
+        content: "🏃 Run in Lyon - Race Results";
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    /* Ensure everything fits on one page */
+    .results-section {
+        transform: scale(0.95);
+        transform-origin: top center;
     }
 }
 
