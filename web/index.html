@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run in Lyon - Race Results Explorer</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Loading race data...</p>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <div class="container">
+        <header>
+            <h1>🏃 Run in Lyon - Race Results Explorer</h1>
+            <p class="subtitle">Search for your bib, check your percentile, and explore race statistics</p>
+
+            <!-- Race Selector -->
+            <div class="race-selector">
+                <button class="race-btn active" data-race="10k" data-file="../data/639.json" aria-label="Select 10K race">10K</button>
+                <button class="race-btn" data-race="21k" data-file="../data/635.json" aria-label="Select Half Marathon race">Half Marathon (21K)</button>
+                <button class="race-btn" data-race="42k" data-file="../data/636.json" aria-label="Select Marathon race">Marathon (42K)</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Search Section -->
+            <section class="search-section">
+                <div class="search-box">
+                    <input type="text" id="bibSearch" placeholder="Enter your bib number..." aria-label="Bib number search" />
+                    <button id="searchBtn" aria-label="Search by bib number">Search</button>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="nameSearch" placeholder="Or search by name..." aria-label="Name search" />
+                    <button id="nameSearchBtn" aria-label="Search by name">Search by Name</button>
+                    <button id="clearSearchBtn" class="clear-btn" aria-label="Clear search results">Clear</button>
+                </div>
+            </section>
+
+            <!-- Participant Results -->
+            <section id="participantResults" class="results-section hidden">
+                <h2>Your Results</h2>
+                <div id="participantCard" class="participant-card"></div>
+            </section>
+
+            <!-- Overall Statistics -->
+            <section class="stats-section">
+                <h2>Race Statistics</h2>
+                <div id="overallStats" class="stats-grid">
+                    <!-- Stats will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Filters Section -->
+            <section class="filters-section">
+                <h2>Filter & Explore</h2>
+                <div id="filterStatus" class="filter-status hidden"></div>
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label for="genderFilter">Gender:</label>
+                        <select id="genderFilter">
+                            <option value="all">All</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="categoryFilter">Category:</label>
+                        <select id="categoryFilter">
+                            <option value="all">All Categories</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="nationalityFilter">Nationality:</label>
+                        <select id="nationalityFilter">
+                            <option value="all">All Countries</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visualizations -->
+            <section class="charts-section">
+                <h2>Data Visualizations</h2>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <h3>Time Distribution</h3>
+                        <canvas id="timeDistChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Performance by Category</h3>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Gender Distribution</h3>
+                        <canvas id="genderChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Top 10 Nationalities</h3>
+                        <canvas id="nationalityChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Leaderboard -->
+            <section class="leaderboard-section">
+                <h2>Leaderboard</h2>
+                <div class="leaderboard-controls">
+                    <button class="tab-btn active" data-tab="overall">Overall</button>
+                    <button class="tab-btn" data-tab="male">Male</button>
+                    <button class="tab-btn" data-tab="female">Female</button>
+                </div>
+                <div id="leaderboardTable" class="table-container"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Run in Lyon Race Data Explorer | Powered by Race Analytics</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

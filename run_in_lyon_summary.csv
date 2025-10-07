@@ -1,0 +1,70 @@
+Métrique,Valeur,Détail
+==================================================,STATISTIQUES GÉNÉRALES DE LA COURSE,==================================================
+Participants totaux,"16,276",
+Arrivants,"16,276",
+Taux de finition,100.0%,
+,,
+==================================================,RÉPARTITION PAR GENRE,==================================================
+Hommes,"9,252",(56.8%)
+Femmes,"7,024",(43.2%)
+,,
+==================================================,PERFORMANCES TEMPORELLES,==================================================
+Temps moyen,02:00:26,(Temps réel)
+Temps médian,01:58:38,(Temps réel)
+Meilleur temps,01:04:34,(Temps réel)
+Temps le plus lent,06:06:56,(Temps réel)
+,,
+==================================================,ANALYSE DES DÉLAIS DE DÉPART,==================================================
+Délai moyen de départ,00:55:17,
+Délai maximum,01:30:50,
+Participants avec délai > 1min,"15,997",(98.3%)
+Participants avec délai > 5min,"15,709",(96.5%)
+,,
+==================================================,COMPARAISON DES PERFORMANCES PAR GENRE,==================================================
+Temps moyen male,01:53:54,"(9,252 participants)"
+Meilleur temps male,01:04:34,
+Temps moyen female,02:09:03,"(7,024 participants)"
+Meilleur temps female,01:12:24,
+Écart moyen H/F,00:15:09,(13.3%)
+,,
+==================================================,TOP 5 CATÉGORIES D'ÂGE (PLUS RAPIDES),==================================================
+1. Espoir/Junior (18-22),01:51:01,(388 participants)
+2. Junior (16-19),01:54:07,(63 participants)
+3. Master 0 (40-44),01:58:31,(1946 participants)
+4. Senior (23-39),01:59:52,(8780 participants)
+5. Master 1 (45-49),02:00:24,(1432 participants)
+,,
+==================================================,PARTICIPATION PAR CATÉGORIE D'ÂGE,==================================================
+1. Senior (23-39),"8,780",(53.9%)
+2. Master 0 (40-44),"1,946",(12.0%)
+3. Master 1 (45-49),"1,432",(8.8%)
+4. Master 2 (50-54),"1,061",(6.5%)
+5. Master 3 (55-59),987,(6.1%)
+,,
+==================================================,PARTICIPATION INTERNATIONALE,==================================================
+Pays représentés,94,
+1. FR,"15,388",(94.5%)
+2. IT,129,(0.8%)
+3. GB,74,(0.5%)
+4. ES,62,(0.4%)
+5. BE,56,(0.3%)
+,,
+==================================================,QUARTILES DE PERFORMANCE,==================================================
+25% les plus rapides (Q1),01:46:43,Moins de 01:46:43
+50% (Médiane),01:58:38,Temps médian
+75% (Q3),02:12:33,75% sous 02:12:33
+,,
+==================================================,RÉPARTITION DES TEMPS D'ARRIVÉE,==================================================
+Moins de 1h,0,(0.0%)
+1h00 - 1h15,64,(0.4%)
+1h15 - 1h30,811,(5.0%)
+1h30 - 2h00,"7,862",(48.3%)
+Plus de 2h,"7,539",(46.3%)
+,,
+==================================================,PODIUM ET TOP PERFORMERS,==================================================
+PODIUM GÉNÉRAL,,
+🥇 1e place,Julien RABACA,01:04:34 (Dossard 12005)
+🥈 2e place,Baptiste JARD,01:04:54 (Dossard 12012)
+🥉 3e place,Anatole BERTHOU,01:05:03 (Dossard 12009)
+👨 Meilleur homme,Julien RABACA,01:04:34 (Dossard 12005)
+👩 Meilleure femme,Heloise LAIGLE,01:12:24 (Dossard 12103)
